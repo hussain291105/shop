@@ -9,15 +9,15 @@ app.use(cors());
 // Simulated user — securely hashed password
 const USERS = [
   {
-    email: "admin@ezzyautoparts.com",
-    passwordHash: await bcrypt.hash("SuperSecurePass123", 10),
+    userId: "Admin", // ✅ simple username, no email
+    passwordHash: await bcrypt.hash("Rangwala", 10),
   },
 ];
 
 // POST /api/login
 app.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
-  const user = USERS.find((u) => u.email === email);
+  const { userId, password } = req.body; // ✅ changed
+  const user = USERS.find((u) => u.userId === userId);
   if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
   const isValid = await bcrypt.compare(password, user.passwordHash);

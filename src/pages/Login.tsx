@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState(""); // ✅ changed from email
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const Login = () => {
       const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ userId, password }), // ✅ send userId instead of email
       });
 
       if (response.ok) {
@@ -51,10 +51,10 @@ const Login = () => {
 
         <div className="space-y-4">
           <input
-            type="email"
+            type="text"
             placeholder="User ID"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
             className="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-red-500"
             required
           />
