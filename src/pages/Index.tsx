@@ -1,33 +1,23 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
 import Dashboard from "@/components/Dashboard";
-import PartsTable from "@/components/PartsTable";
-import AddPartDialog from "@/components/AddPartDialog";
 import Navbar from "@/components/Navbar";
 import EzzyLogo from "@/assets/ezzy-logo.png";
 
-interface SparePart {
-  id: string;
-  part_number: string;
-  part_name: string;
-  category: string;
-  manufacturer: string | null;
-  description: string | null;
-  price: number;
-  cost_price: number | null;
-  stock_quantity: number;
-  minimum_stock: number;
-  unit: string;
-  location: string | null;
-}
-
 const Index = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleToggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
+  };
+
   return (
     <div className="min-h-screen bg-background text-gray-900">
-      <Navbar />
+      {/* ✅ Pass the required prop */}
+      <Navbar toggleSidebar={handleToggleSidebar} />
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center min-h-[70vh] bg-white text-gray-900 px-4 border-b border-gray-200">
+      <section className="flex flex-col items-center justify-center min-h-[70vh] bg-white text-gray-900 px-4 border-b border-gray-200 mt-16">
+        {/* Added mt-16 to prevent content from hiding behind fixed navbar */}
         <img
           src={EzzyLogo}
           alt="Ezzy Auto Parts Logo"

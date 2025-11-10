@@ -1,36 +1,70 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// src/App.tsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Login from "./pages/Login";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "sonner"; // ✅ Fix import for Sonner toast
+
+// Pages
+import Index from "@/pages/Index";
+import Billing from "@/pages/Billing";
+import NotFound from "@/pages/NotFound";
+import Login from "@/pages/Login";
+import InvoiceForm from "@/pages/InvoiceForm";
+
+// Components
+import ProtectedRoute from "@/components/ProtectedRoute";
+import SidebarLayout from "@/components/SidebarLayout";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      {/* ✅ Global Toasts */}
       <Toaster />
-      <Sonner />
+      <Sonner position="top-right" richColors closeButton /> 
+
       <BrowserRouter>
         <Routes>
-          {/* Public Route */}
+          {/* ---------- PUBLIC ROUTES ---------- */}
           <Route path="/login" element={<Login />} />
 
-          {/* Protected Routes */}
+          {/* ---------- PROTECTED ROUTES ---------- */}
           <Route
             path="/"
             element={
               <ProtectedRoute>
-                <Index />
+                <SidebarLayout>
+                  <Index />
+                </SidebarLayout>
               </ProtectedRoute>
             }
           />
 
-          {/* Catch-all */}
+          <Route
+            path="/billing"
+            element={
+              <ProtectedRoute>
+                <SidebarLayout>
+                  <Billing />
+                </SidebarLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/invoice"
+            element={
+              <ProtectedRoute>
+                <SidebarLayout>
+                  <InvoiceForm />
+                </SidebarLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ---------- 404 FALLBACK ---------- */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
